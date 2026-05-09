@@ -57,19 +57,49 @@ Google CalendarとMaps APIでETAを継続計算。遅刻を検知すると、Ama
 
 ### システム構成図
 
-```
-Pixel Watch（Wear OS）
-  └─ MQTT over TLS ──► AWS IoT Core
-                            ├─ IoT Rules Engine ──► BiometricAnalyzerLambda
-                            │                            └─ SLEEP/ANGER検知
-                            └─ Device Shadow ◄──────────────────────────────┐
-                                    │                                        │
-                                    ▼                                        │
-                              Browser（React）                     ActionExecutorLambda
-                                    │                              （LATE検知・SMS送信）
-                                    ▼                                        ▲
-                         Amazon Nova 2 Sonic                        EventBridge Scheduler
-                        （リアルタイム音声会話）
+```mermaid
+graph TD
+    subgraph device["Pixel Watch (Wear OS)"]
+        watch["心拍数・HRV 収集\nHealth Services API"]
+    end
+
+    subgraph awsiot["AWS IoT Core"]
+        rules["IoT Rules Engine"]
+        shadow["Device Shadow"]
+    end
+
+    subgraph lambdas["AWS Lambda"]
+        bio["BiometricAnalyzerLambda\nSLEEP / ANGER 検知"]
+        action["ActionExecutorLambda\nLATE 検知・メッセージ生成"]
+    end
+
+    subgraph schedule["EventBridge Scheduler"]
+        eb["定期実行トリガー"]
+    end
+
+    subgraph browser["Browser (React)"]
+        app["CarHogo アプリ"]
+        nova["Amazon Nova 2 Sonic\nリアルタイム音声会話"]
+    end
+
+    subgraph ext["外部サービス"]
+        bedrock["Amazon Bedrock\nClaude 3 Haiku"]
+        gcal["Google Calendar API"]
+        gmaps["Google Maps API"]
+        sns["Amazon SNS\nSMS 送信"]
+    end
+
+    watch -->|"MQTT over TLS"| rules
+    rules -->|"トリガー"| bio
+    bio -->|"Shadow 更新"| shadow
+    shadow -->|"WebSocket"| app
+    app <-->|"双方向音声"| nova
+    eb --> action
+    action --> gcal
+    action --> gmaps
+    action -->|"メッセージ生成"| bedrock
+    action -->|"Shadow 更新"| shadow
+    nova -->|"承認後"| sns
 ```
 
 ## 📁 リポジトリ構成（予定）
