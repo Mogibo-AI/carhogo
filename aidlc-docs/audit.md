@@ -1,5 +1,16 @@
 # AI-DLC 監査ログ
 
+## 改善対応: Hooks × コンポーネント対応 Matrix の追加
+**Timestamp**: 2026-05-10T00:11:00Z
+**User Input**: "はい、次の改善を進めて下さい。🟡 中 Hooks × コンポーネント対応 Matrix を追加 component-methods.md"
+**AI Response**: component-methods.md の Custom Hooks セクション末尾に「Hooks × コンポーネント 対応 Matrix」を追加。3 Hooks（useAuth・useIoTShadow・useNovaSession）× 7 コンポーネント（App・LoginPage・Dashboard・BiometricDisplay・ActionStatusDisplay・NovaConversationUI・ActionHistoryList）の対応表と、各セルの具体的な利用目的詳細を記述。NovaConversationUI のみ2つの Hook を使用（useIoTShadow でアクション種別取得・useNovaSession で音声制御）。波及なし。
+**Context**: Inception 成果物改善 — Hooks × コンポーネント対応 Matrix 追加（🟡 中優先度）
+
+### 変更ファイル
+- `aidlc-docs/inception/application-design/component-methods.md`: Custom Hooks セクション末尾に Matrix と各セルの利用目的詳細を追加
+
+---
+
 ## 改善対応: 証明書管理フローの責務明記
 **Timestamp**: 2026-05-10T00:10:00Z
 **User Input**: "続けて以下の改善を進めて下さい。🟡 中 証明書管理フローの責務を明記 unit-of-work-dependency.md"

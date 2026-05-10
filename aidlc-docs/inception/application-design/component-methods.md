@@ -212,3 +212,49 @@ function useIoTShadow(deviceId: string): ShadowState
 // Nova 2 Sonic セッション制御と状態を提供
 function useNovaSession(): { sessionState: SessionState; startSession: ...; endSession: ... }
 ```
+
+---
+
+## Hooks × コンポーネント 対応 Matrix
+
+各 React コンポーネントが使用する Hook と、そのコンポーネントでの具体的な利用目的を示します。
+
+| コンポーネント | `useAuth` | `useIoTShadow` | `useNovaSession` |
+|-------------|:---------:|:--------------:|:----------------:|
+| `App` | ✓ | — | — |
+| `LoginPage` | ✓ | — | — |
+| `Dashboard` | — | ✓ | — |
+| `BiometricDisplay` | — | ✓ | — |
+| `ActionStatusDisplay` | — | ✓ | — |
+| `NovaConversationUI` | — | ✓ | ✓ |
+| `ActionHistoryList` | — | ✓ | — |
+
+### 各セルの利用目的詳細
+
+#### `App` — useAuth
+- `user` の null チェックで認証済み/未認証を判定
+- 未認証 → `<LoginPage />` を描画、認証済み → `<Dashboard />` を描画
+
+#### `LoginPage` — useAuth
+- `signIn(email, password)` を呼び出してログイン処理を実行
+- エラー状態（認証失敗メッセージ）の表示
+
+#### `Dashboard` — useIoTShadow
+- `shadowState.actionType`（IDLE / SLEEP / ANGER / LATE）に応じて `<NovaConversationUI />` の表示/非表示を切り替え
+- 子コンポーネントへ `shadowState` を props として配布するレイアウト制御
+
+#### `BiometricDisplay` — useIoTShadow
+- `shadowState.heartRate`・`shadowState.hrv` をリアルタイムグラフ（recharts）へバインド
+- 接続状態（`shadowState.connected`）に応じてローディング表示を切り替え
+
+#### `ActionStatusDisplay` — useIoTShadow
+- `shadowState.actionType` をバッジ表示（IDLE / SLEEP中 / ANGER中 / LATE中）
+- `shadowState.actionStartedAt` でアクション継続時間を計算・表示
+
+#### `NovaConversationUI` — useIoTShadow + useNovaSession
+- `useIoTShadow`: `shadowState.actionType` でどのアクション（SLEEP/ANGER/LATE）が発動中かを取得し、Nova 2 Sonic への初期プロンプトを決定
+- `useNovaSession`: `startSession(prompt)`・`endSession()` で音声会話を開始/終了。`sessionState`（IDLE / CONNECTING / ACTIVE / ENDING）でマイクボタンの活性化制御
+
+#### `ActionHistoryList` — useIoTShadow
+- `shadowState.recentActions`（直近10件のアクションログ）を一覧表示
+- 種別・開始時刻・継続時間を整形して表示
