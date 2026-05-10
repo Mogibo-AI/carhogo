@@ -1,5 +1,18 @@
 # AI-DLC 監査ログ
 
+## 用語変更: コパイロット → アシスタント
+**Timestamp**: 2026-05-10T00:18:00Z
+**User Input**: "コパイロットという表現が見られますが、Microsoft Copilotと混同しかねませんので、別の表現を提案して下さい。" → "コパイロットからアシスタントという表現に変更して下さい。"
+**AI Response**: 「コパイロット」を「アシスタント」に3箇所置換。
+**Context**: 用語変更 — Microsoft Copilot との混同回避
+
+### 変更ファイル
+- `README.md`: `過保護なAI安全コパイロット` → `過保護なAIアシスタント`
+- `writing-inputs/carhogo-vision-document.md`: `対話型安全コパイロット` → `対話型安全アシスタント`
+- `writing-inputs/carhogo-vision-document.md`: `安全コパイロット` → `安全アシスタント`
+
+---
+
 ## リンク切れ修正 — requirements.md の glossary リンク
 **Timestamp**: 2026-05-10T00:16:00Z
 **User Input**: "requirements.mdの中の用語集へのリンクがリンク切れを起こしているみたいです。リンク切れの修正と、他にも同様に問題が起きていないかinceptionフェーズの全ての成果物を見直して下さい。"
