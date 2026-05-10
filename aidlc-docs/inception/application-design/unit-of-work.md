@@ -162,3 +162,10 @@ Phase 2: Unit 2 (Pixel Watch) + Unit 3 (backend) — 並行開発可
 Phase 3: Unit 4 (Browser)
   └─ browser/ - Cognito・IoT Endpoint 確定後に NovaSessionService 等を実装
 ```
+
+---
+
+**関連ドキュメント**:
+- [ユニット依存関係](./unit-of-work-dependency.md) — ユニット間の依存関係・ビルド順序・証明書管理フロー
+- [ユニット × ストーリー マッピング](./unit-of-work-story-map.md) — 各ユニットが担当するユーザーストーリー
+- [アプリケーション設計 統合サマリー](./application-design.md) — システム全体のアーキテクチャ概要

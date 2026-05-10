@@ -2,6 +2,11 @@
 
 > **注意**: 詳細なビジネスロジック（閾値・アルゴリズム・エラーハンドリング詳細）は CONSTRUCTION フェーズの Functional Design で定義します。
 
+**関連ドキュメント**:
+- [コンポーネント定義](./components.md) — 全コンポーネントの責務・属性一覧
+- [コンポーネント依存関係](./component-dependency.md) — 依存関係マトリクス・通信パターン・Shadow スキーマ・DynamoDB 設計
+- [サービスフロー図](./services.md) — SLEEP/ANGER/LATE アクション別のシーケンス図
+
 ---
 
 ## BiometricAnalyzerLambda（TypeScript）

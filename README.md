@@ -43,6 +43,8 @@
 
 Google CalendarとMaps APIでETAを継続計算。遅刻を検知すると、Amazon Bedrockが謝罪メッセージを生成し、Nova 2 Sonicがドライバーに読み上げて確認。承認するとAmazon SNS経由でSMSが自動送信されます。ドライバーはスマートフォンに触れません。
 
+> 各アクションの詳細な受け入れ基準とサンプルダイアログは [ユーザーストーリー](aidlc-docs/inception/user-stories/stories.md) を参照。
+
 ## 🛠 使用技術
 
 - **Pixel Watch**: Kotlin 1.9 / Wear OS API 33 / Health Services API（心拍数・HRV収集）

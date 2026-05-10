@@ -4,6 +4,11 @@
 **整理方法**: ユーザージャーニーベース  
 **合計**: 14件  
 
+**関連ドキュメント**:
+- [ペルソナ定義](../user-stories/personas.md) — 文野 もじゃの詳細プロフィール
+- [要件定義書](../requirements/requirements.md) — 各ストーリーの元となる機能要件（FR）・非機能要件（NFR）
+- [ユニット × ストーリー マッピング](../application-design/unit-of-work-story-map.md) — 各ストーリーの実装担当ユニット
+
 ---
 
 ## Journey 1: 乗車・Pixel Watch セットアップ
