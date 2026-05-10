@@ -1,6 +1,6 @@
 # 要件定義書 — CarHogo
 
-> 専門用語の定義は [用語集（glossary.md）](./glossary.md) を参照してください。
+> 専門用語の定義は [用語集（glossary.md）](../glossary.md) を参照してください。
 
 ## インテント分析サマリー
 

@@ -1,5 +1,16 @@
 # AI-DLC 監査ログ
 
+## リンク切れ修正 — requirements.md の glossary リンク
+**Timestamp**: 2026-05-10T00:16:00Z
+**User Input**: "requirements.mdの中の用語集へのリンクがリンク切れを起こしているみたいです。リンク切れの修正と、他にも同様に問題が起きていないかinceptionフェーズの全ての成果物を見直して下さい。"
+**AI Response**: inception フェーズ全成果物（19ファイル）のリンクを一括検証。リンク切れは requirements.md の glossary リンク1箇所のみ。`./glossary.md` → `../glossary.md` に修正。README.md のリンク（リポジトリルート相対パス）も正常を確認。再検証でリンク切れゼロを確認。
+**Context**: リンク切れ修正 — requirements.md → glossary.md
+
+### 変更ファイル
+- `aidlc-docs/inception/requirements/requirements.md`: glossary リンク `./glossary.md` → `../glossary.md`
+
+---
+
 ## aidlc-state.md ステータス更新（承認待ち注釈の修正）
 **Timestamp**: 2026-05-10T00:15:00Z
 **User Input**: "改善作業は終了とします。aidlc-state.mdの中で、Workflow Planningが承認待ちとなっている点が気になります。この状態でinceptionフェーズは完了していると言えますか？ Workflow Planning — COMPLETED (2026-05-09) — execution-plan.md 生成済み（承認待ち）"
