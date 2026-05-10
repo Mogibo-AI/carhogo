@@ -1,5 +1,16 @@
 # AI-DLC 監査ログ
 
+## README.md — EyeSight・DMS・Autopilot に補足説明を追加
+**Timestamp**: 2026-05-10T00:20:00Z
+**User Input**: "EyeSight・DMS・Autopilot の説明がないように見えます。これらの存在を知らない人がいるかと思いますので補足説明を追加して下さい。"
+**AI Response**: README.md の「課題」行で EyeSight・DMS・Autopilot それぞれに括弧書きの補足説明を追加。
+**Context**: README.md 可読性向上 — 専門技術用語への補足
+
+### 変更ファイル
+- `README.md`: EyeSight（スバルのステレオカメラによる衝突警告・自動ブレーキ）・DMS（ドライバーモニタリングシステム：カメラで顔・視線を検知）・Autopilot（Teslaの車速・操舵を自動制御する運転支援機能）の説明を括弧書きで追記
+
+---
+
 ## 用語変更: コパイロット → アシスタント
 **Timestamp**: 2026-05-10T00:18:00Z
 **User Input**: "コパイロットという表現が見られますが、Microsoft Copilotと混同しかねませんので、別の表現を提案して下さい。" → "コパイロットからアシスタントという表現に変更して下さい。"
