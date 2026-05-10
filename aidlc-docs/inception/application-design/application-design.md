@@ -2,42 +2,46 @@
 
 ## アーキテクチャ概要
 
-```
-+------------------+     MQTT/TLS      +-------------------+
-|  Pixel Watch     |─────────────────▶ |   AWS IoT Core    |
-|  (Kotlin/WearOS) |                   | IoT Rules Engine  |
-+------------------+                   | Device Shadow     |
-                                        +─────────┬─────────+
-                                                  │ IoT Rule
-                                    +─────────────┘
-                                    ▼
-                        +──────────────────────+
-                        | BiometricAnalyzer    |
-                        | Lambda               |
-                        | (SLEEP/ANGER検知)    |
-                        +──────────────────────+
-                                    │ desired更新
-                                    ▼
-+──────────────────+      WebSocket/Shadow      +─────────────────+
-| ActionExecutor   |─────────desired更新──────▶ | IoT Device      |
-| Lambda           |                            | Shadow          |
-| (LATE処理)       |◀────── SMS承認 ────────────│                 |
-+──────────────────+                            +────────┬────────+
-    │ Bedrock/SNS/Google                                  │ delta（SigV4）
-    ▼                                                     ▼
-+──────────────────────────────────────────────────────────────────+
-|               ブラウザ CarHogoアプリ（React 18）                 |
-|   IoTShadowService  │  NovaSessionService  │  AuthService        |
-|   useIoTShadow      │  useNovaSession      │  useAuth            |
-|   BiometricDisplay  │  NovaConversationUI  │  ActionStatusDisplay|
-+──────────────────────────────────────────────────────────────────+
-                                    │ WebSocket（SigV4）
-                                    ▼
-                        +──────────────────────+
-                        | Amazon Nova 2 Sonic  |
-                        | (ap-northeast-1)     |
-                        | リアルタイム音声会話  |
-                        +──────────────────────+
+レイヤード・アーキテクチャ視点でのシステム全体構成（データフロー視点の構成図は [README.md](../../../README.md#システム構成図) を参照）:
+
+```mermaid
+flowchart TB
+    subgraph L1["📱 デバイス層"]
+        watch["Pixel Watch (Kotlin / Wear OS)<br/>BiometricCollector・MqttManager"]
+    end
+
+    subgraph L2["☁️ IoT データレイヤー (AWS IoT Core)"]
+        rules["IoT Rules Engine"]
+        shadow["Device Shadow"]
+    end
+
+    subgraph L3["⚙️ ロジック層 (AWS Lambda)"]
+        bio["BiometricAnalyzerLambda<br/>SLEEP/ANGER 検知・回復判定"]
+        action["ActionExecutorLambda<br/>LATE 処理・SMS 送信"]
+        eb["EventBridge Scheduler"]
+    end
+
+    subgraph L4["🤖 AI 層"]
+        nova["Amazon Nova 2 Sonic<br/>(リアルタイム音声会話)"]
+        bedrock["Amazon Bedrock<br/>(Claude 3 Haiku)"]
+    end
+
+    subgraph L5["🌐 プレゼンテーション層 (React 18)"]
+        services["Services<br/>AuthService / IoTShadowService / NovaSessionService"]
+        hooks["Custom Hooks<br/>useAuth / useIoTShadow / useNovaSession"]
+        comps["Components<br/>Dashboard / NovaConversationUI / BiometricDisplay 等"]
+    end
+
+    watch -->|"MQTT/TLS"| rules
+    rules -->|"IoT Rule"| bio
+    bio -->|"desired 更新"| shadow
+    eb --> action
+    action -->|"desired 更新"| shadow
+    action --> bedrock
+    shadow -->|"WebSocket delta (SigV4)"| services
+    services --> hooks
+    hooks --> comps
+    comps <-->|"WebSocket (SigV4)"| nova
 ```
 
 ---

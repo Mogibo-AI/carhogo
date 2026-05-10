@@ -12,8 +12,8 @@
 | モジュール | 責務 |
 |----------|------|
 | `BiometricValidator` | MQTT ペイロードのスキーマバリデーション・心拍数値の範囲チェック（0〜300 BPM） |
-| `SleepDetector` | 心拍数ベースラインとの差分・継続時間からSLEEPパターンを判定 |
-| `AngerDetector` | 心拍数スパイク速度からANGERパターンを判定 |
+| `SleepDetector` | 心拍数ベースラインとの差分・継続時間からSLEEPパターンを判定 / 回復判定（ベースライン復帰検知） |
+| `AngerDetector` | 心拍数スパイク速度からANGERパターンを判定 / 回復判定（心拍数安定検知） |
 | `ShadowPublisher` | IoT Device Shadow の desired 状態を更新してアクションをブラウザへ通知 |
 | `HeartRateRepository` | 心拍数履歴を DynamoDB に書き込み・ベースライン値を取得 |
 | `ActionLogRepository` | アクション発火ログを DynamoDB に記録 |
@@ -132,3 +132,11 @@
 | `ActionStatusDisplay` | 現在のアクション状態（IDLE / SLEEP / ANGER / LATE）をバッジ表示 |
 | `NovaConversationUI` | マイク ON/OFF ボタン・会話状態インジケーター・Nova 2 Sonic 音声入出力 UI |
 | `ActionHistoryList` | 直近10件のアクション履歴（種別・開始時刻・継続時間）を一覧表示 |
+
+---
+
+**関連ドキュメント**:
+- [コンポーネントメソッド](./component-methods.md) — 全メソッドシグネチャ・型定義
+- [コンポーネント依存関係](./component-dependency.md) — 依存関係マトリクス・通信パターン・Shadow スキーマ・DynamoDB 設計
+- [サービスフロー図](./services.md) — SLEEP/ANGER/LATE アクション別のシーケンス図
+- [アプリケーション設計 統合サマリー](./application-design.md) — システム全体のアーキテクチャ概要

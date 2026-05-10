@@ -29,12 +29,16 @@ isValidHeartRate(heartRate: number): boolean
 ```typescript
 // 心拍数低下が一定割合・一定時間継続しているか判定
 detectSleep(current: BiometricReading, baseline: number): boolean
+// SLEEP 状態からの回復（心拍数のベースライン復帰）を判定
+detectRecovery(current: BiometricReading, baseline: number): boolean
 ```
 
 ### AngerDetector
 ```typescript
 // 心拍数スパイクのパターンを判定
 detectAnger(current: BiometricReading, recent: BiometricReading[]): boolean
+// ANGER 状態からの回復（心拍数の安定）を判定
+detectRecovery(current: BiometricReading, recent: BiometricReading[]): boolean
 ```
 
 ### ShadowPublisher
@@ -43,6 +47,8 @@ detectAnger(current: BiometricReading, recent: BiometricReading[]): boolean
 publishActionTrigger(actionType: ActionType, deviceId: string): Promise<void>
 // Device Shadow のアクション状態をアイドルに戻す
 clearActionState(deviceId: string): Promise<void>
+// Device Shadow から現在のアクション状態を取得（回復判定の前提条件として使用）
+getCurrentActionState(deviceId: string): Promise<ActionType>
 ```
 
 ### HeartRateRepository

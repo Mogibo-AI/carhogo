@@ -96,3 +96,11 @@ ActionExecutorLambda
 
 **GSI（deviceId 逆引き）:**
 - GSI-1: PK = `DEVICE#{deviceId}` → UserConfig の逆引き用
+
+---
+
+**関連ドキュメント**:
+- [コンポーネント定義](./components.md) — 全コンポーネントの責務・属性一覧
+- [コンポーネントメソッド](./component-methods.md) — 全メソッドシグネチャ・型定義
+- [サービスフロー図](./services.md) — SLEEP/ANGER/LATE アクション別のシーケンス図
+- [アプリケーション設計 統合サマリー](./application-design.md) — システム全体のアーキテクチャ概要

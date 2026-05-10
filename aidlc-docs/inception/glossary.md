@@ -13,7 +13,7 @@
 | **ANGER アクション** | 怒り・ストレスパターン検知時に自動発動するアクション。Nova 2 Sonic が共感的な音声会話で感情を沈静化させる |
 | **LATE アクション** | 遅刻確定時に自動発動するアクション。Bedrock でメッセージ生成 → Nova 2 Sonic が読み上げ → ドライバー承認後に SNS で SMS 送信 |
 | **ベースライン心拍数** | ドライバー個人の「平常時の心拍数」。SLEEP/ANGER 検知の基準値として DynamoDB に保持される |
-| **T0** | イベントタイムラインの計測基準点。SLEEP/ANGER では「Pixel Watch がパターンを検知した瞬間」、LATE では「EventBridge が Lambda を起動した瞬間」（詳細は requirements.md「イベントタイムライン定義」参照） |
+| **T0** | イベントタイムラインの計測基準点。SLEEP/ANGER では「Pixel Watch が SLEEP/ANGER のトリガーとなる生体データを送信した瞬間」（実際のパターン判定は BiometricAnalyzerLambda が T0+<1s 以降に実施）、LATE では「EventBridge が Lambda を起動した瞬間」（詳細は requirements.md「イベントタイムライン定義」参照） |
 
 ---
 
@@ -62,6 +62,18 @@
 
 ---
 
+## 競合システム・自動車技術
+
+| 用語 | 定義 |
+|------|------|
+| **EyeSight** | スバルが提供する運転支援技術。ステレオカメラを使用した前方衝突警告・自動ブレーキ・車線逸脱警告などを統合した安全システム |
+| **PCS** | Pre-Collision System（プリクラッシュセーフティシステム）。トヨタが提供する衝突回避支援機能。自動ブレーキ・警告音などを統合する |
+| **DMS** | Driver Monitoring System（ドライバーモニタリングシステム）。車載カメラでドライバーの顔・視線を撮影し、眠気・脇見運転を検知して警告する技術 |
+| **Autopilot** | テスラが提供する高度運転支援機能。車両の速度・操舵を自動制御する。同社の上位機能として FSD がある |
+| **FSD** | Full Self-Driving（フルセルフドライビング）。テスラの高度自動運転機能。Autopilot の上位機能として位置付けられる |
+
+---
+
 ## OS・フレームワーク
 
 | 用語 | 定義 |
@@ -77,5 +89,6 @@
 | 用語 | 定義 |
 |------|------|
 | **MVP** | Minimum Viable Product（実用最小限の製品）。最低限の機能で動作する最初のバージョン。CarHogo の MVP は SLEEP・ANGER・LATE の3アクションが E2E で動作することを目標とする |
+| **PoC** | Proof of Concept（概念実証）。新しいアイデアや技術が実現可能かを検証するための小規模な試作・実装。MVP より前段階の検証フェーズを指すことが多い |
 | **Gherkin** | BDD（振る舞い駆動開発）でテストシナリオを記述するための形式的な言語。`Given（前提条件）/ When（操作）/ Then（期待結果）` の構文でユーザーストーリーの受け入れ基準を記述する |
 | **ETA** | Estimated Time of Arrival（到着予想時刻）。CarHogo の LATE アクションで Google Maps Directions API を使って計算する |

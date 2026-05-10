@@ -1,5 +1,54 @@
 # AI-DLC 監査ログ
 
+## Opus 再レビュー対応 — 10件の改善対応
+**Timestamp**: 2026-05-10T00:30:00Z
+**User Input**: "AIモデルをOpusに変更してみました。もう一度inceptionフェーズの全てのドキュメント、 READEMEをレビューして下さい。" → "以下の点について、修正案のとおり対応して下さい。1. T0定義の論理矛盾 / 2. NFR-03 タイトルに「拡張拡張」の誤字 / 3. application-design.md の ASCII図が破損 / 4. 会話終了の責務が不明確 / 7. glossary.md に競合分析の略語が欠けている / 8. クロスリファレンスフッターが3ファイルで欠落 / 9. FR-09-05 に injectCertificates が未記載 / 10. README.md の「課題」行が長すぎる / 12. services.md の ASCII フロー図も Mermaid シーケンス図化 / 14. NFR-01-03（10秒以内）の表記ニュアンスがREADMEと不揃い"
+**AI Response**: Opus再レビューで指摘された10件をまとめて対応。
+**Context**: Inception 成果物の包括的整合性向上（Opus 再レビュー対応）
+
+### 変更ファイル
+1. **T0定義の論理矛盾修正**:
+   - `aidlc-docs/inception/requirements/requirements.md`:
+     - L155 タイムライン T0 定義: `Pixel Watch が SLEEP/ANGER パターンを検知` → `Pixel Watch が SLEEP/ANGER のトリガーとなる生体データを送信した瞬間（実際のパターン判定は BiometricAnalyzerLambda が T0+<1s 以降に実施）`
+     - L180-183 NFR 対応表: `T0（Pixel Watch 検知）` → `T0（Pixel Watch データ送信）` (4箇所)
+   - `aidlc-docs/inception/user-stories/stories.md`: `T0（Pixel Watch 検知時点）` → `T0（Pixel Watch データ送信時点）` (4箇所)
+   - `aidlc-docs/inception/glossary.md`: T0 の SLEEP/ANGER 定義を「Pixel Watch が SLEEP/ANGER のトリガーとなる生体データを送信した瞬間」に更新
+
+2. **NFR-03 誤字修正**:
+   - `aidlc-docs/inception/requirements/requirements.md` L207: `拡張拡張なし` → `拡張なし`
+
+3. **application-design.md ASCII図 → Mermaid**:
+   - `aidlc-docs/inception/application-design/application-design.md`: 破損したASCII図をレイヤード・アーキテクチャ視点のMermaid flowchart図に置換。README.mdのデータフロー視点とは差別化。
+
+4. **会話終了責務の明確化**:
+   - `aidlc-docs/inception/application-design/components.md`: `SleepDetector` / `AngerDetector` の責務に「回復判定」を追記
+   - `aidlc-docs/inception/application-design/component-methods.md`: `SleepDetector.detectRecovery()` / `AngerDetector.detectRecovery()` / `ShadowPublisher.getCurrentActionState()` メソッドを追加
+   - `aidlc-docs/inception/application-design/services.md`: SLEEP終了の責務を「BiometricAnalyzerLambda が次の心拍数受信時に Shadow から現在のアクション状態を取得し、回復判定して desired.action=IDLE に更新」と明確化
+
+5. **glossary.md に競合分析の略語追加**:
+   - `aidlc-docs/inception/glossary.md`:
+     - 新規セクション「## 競合システム・自動車技術」を追加（EyeSight・PCS・DMS・Autopilot・FSD）
+     - 「## 開発手法・テスト用語」に PoC を追加
+
+6. **クロスリファレンスフッター追加（3ファイル）**:
+   - `aidlc-docs/inception/application-design/components.md`: 末尾に4ファイルへのリンク追加
+   - `aidlc-docs/inception/application-design/component-dependency.md`: 末尾に4ファイルへのリンク追加
+   - `aidlc-docs/inception/application-design/services.md`: 末尾に4ファイルへのリンク追加
+
+7. **FR-09-05 に injectCertificates 追記**:
+   - `aidlc-docs/inception/requirements/requirements.md` L142: `injectIoTConfig` のみの記載から `injectIoTConfig`・`injectCertificates` の両タスク記載に拡張。CDK が `cdk/output/certs/` に出力 → Gradle が `watch/app/src/main/res/raw/` へコピーするフローを追記
+
+8. **README.md「課題」行の整理**:
+   - `README.md`: 課題行内の括弧書き補足を削除し、3箇条書きの直後に `> 既存技術の補足` ブロックで EyeSight・DMS・Autopilot を箇条書き展開
+
+9. **services.md ASCII → Mermaid シーケンス図**:
+   - `aidlc-docs/inception/application-design/services.md`: SLEEP・ANGER・LATE の3アクションフロー図を Mermaid sequenceDiagram に置換。SLEEP/ANGER は検知・終了の両フローを統合。LATE は EventBridge → Bedrock → Nova → SMS の全工程を網羅
+
+10. **NFR-01-03（10秒以内）README表記統一**:
+    - `README.md` 成功指標表: `10秒以内` → `10秒以内（※ベストエフォート）`、注記でNova 2 Sonic読み上げ時間とドライバー応答時間が含まれることを明記し、要件定義書のイベントタイムライン定義へのリンクを追加
+
+---
+
 ## README.md — EyeSight・DMS・Autopilot に補足説明を追加
 **Timestamp**: 2026-05-10T00:20:00Z
 **User Input**: "EyeSight・DMS・Autopilot の説明がないように見えます。これらの存在を知らない人がいるかと思いますので補足説明を追加して下さい。"
