@@ -1,5 +1,21 @@
 # AI-DLC 監査ログ
 
+## 改善対応: execution-plan.md の Unit 数を4ユニットに統一
+**Timestamp**: 2026-05-10T00:13:00Z
+**User Input**: "はい、「execution-plan.md の Unit 数を4ユニットに統一」を対応して下さい。"
+**AI Response**: execution-plan.md の「予定ユニット」テーブルを5ユニット体系から4ユニット体系に修正。Units Generation の根拠記述を更新（「5つのシステムコンポーネント」→「4ユニット」、Lambda 4関数→Lambda 2関数）。Workflow Planning・Application Design・Units Generation のステータスを COMPLETED に更新。Mermaid 図・テキスト形式の代替表示も合わせて修正。
+**Context**: Inception 成果物整合性修正 — execution-plan.md Unit 数統一（再レビュー指摘対応）
+
+### 変更ファイル
+- `aidlc-docs/inception/plans/execution-plan.md`:
+  - 「予定ユニット」→「確定ユニット」に改名、5ユニット→4ユニット体系に修正（ディレクトリ列追加、Unit 3をbackend統合、Unit 4をブラウザに繰り上げ）
+  - Units Generation 根拠記述を4ユニット決定の説明に更新
+  - Workflow Planning・Application Design・Units Generation を COMPLETED に更新
+  - Mermaid 図のノード名・スタイル（橙→緑）を更新
+  - テキスト形式の代替表示を更新
+
+---
+
 ## 改善対応: ドキュメント間クロスリファレンスのリンク追加
 **Timestamp**: 2026-05-10T00:12:00Z
 **User Input**: "はい、次の改善を進めて下さい。🟢 低 ドキュメント間クロスリファレンスのリンク追加 各ファイル"

@@ -39,9 +39,9 @@ flowchart TD
         RE["Reverse Engineering\nSKIPPED"]
         RA["Requirements Analysis\nCOMPLETED"]
         US["User Stories\nCOMPLETED"]
-        WP["Workflow Planning\nIN PROGRESS"]
-        AD["Application Design\nEXECUTE"]
-        UG["Units Generation\nEXECUTE"]
+        WP["Workflow Planning\nCOMPLETED"]
+        AD["Application Design\nCOMPLETED"]
+        UG["Units Generation\nCOMPLETED"]
     end
 
     subgraph CONSTRUCTION["🟢 CONSTRUCTION PHASE"]
@@ -79,8 +79,8 @@ flowchart TD
     style RA fill:#4CAF50,stroke:#1B5E20,stroke-width:3px,color:#fff
     style US fill:#4CAF50,stroke:#1B5E20,stroke-width:3px,color:#fff
     style WP fill:#4CAF50,stroke:#1B5E20,stroke-width:3px,color:#fff
-    style AD fill:#FFA726,stroke:#E65100,stroke-width:3px,stroke-dasharray:5 5,color:#000
-    style UG fill:#FFA726,stroke:#E65100,stroke-width:3px,stroke-dasharray:5 5,color:#000
+    style AD fill:#4CAF50,stroke:#1B5E20,stroke-width:3px,color:#fff
+    style UG fill:#4CAF50,stroke:#1B5E20,stroke-width:3px,color:#fff
     style FD fill:#FFA726,stroke:#E65100,stroke-width:3px,stroke-dasharray:5 5,color:#000
     style NFRA fill:#FFA726,stroke:#E65100,stroke-width:3px,stroke-dasharray:5 5,color:#000
     style NFRD fill:#FFA726,stroke:#E65100,stroke-width:3px,stroke-dasharray:5 5,color:#000
@@ -104,9 +104,9 @@ INCEPTION PHASE
   ⏭ Reverse Engineering   — SKIPPED（グリーンフィールド）
   ✅ Requirements Analysis — COMPLETED
   ✅ User Stories          — COMPLETED（14ストーリー）
-  ✅ Workflow Planning     — IN PROGRESS
-  🟠 Application Design   — EXECUTE
-  🟠 Units Generation     — EXECUTE
+  ✅ Workflow Planning     — COMPLETED
+  ✅ Application Design   — COMPLETED（5アーティファクト生成済み）
+  ✅ Units Generation     — COMPLETED（4ユニット確定）
 
 CONSTRUCTION PHASE（ユニットごとに繰り返し）
   🟠 Functional Design    — EXECUTE（per unit）
@@ -130,11 +130,11 @@ OPERATIONS PHASE
 - [x] Reverse Engineering — **SKIPPED**（グリーンフィールド。既存コードなし）
 - [x] Requirements Analysis — **COMPLETED**（requirements.md 生成済み）
 - [x] User Stories — **COMPLETED**（14ストーリー・1ペルソナ）
-- [x] Workflow Planning — **IN PROGRESS**（本ドキュメント）
-- [ ] Application Design — **EXECUTE**
-  - **根拠**: 新規コンポーネントとサービスが多数必要。Lambda 4関数・CDK 1スタック・Wear OS 3コンポーネント・React 8コンポーネントのメソッド設計と依存関係定義が必要。
-- [ ] Units Generation — **EXECUTE**
-  - **根拠**: 5つのシステムコンポーネント（CDK・Pixel Watch・IoT Lambda・LATE Lambda・Browser）に分解が必要。並列開発とコード生成の効率化のため。
+- [x] Workflow Planning — **COMPLETED**（本ドキュメント）
+- [x] Application Design — **COMPLETED**（components.md・component-methods.md・services.md・component-dependency.md・application-design.md 生成済み）
+  - **根拠**: 新規コンポーネントとサービスが多数必要。Lambda 2関数・CDK 1スタック・Wear OS 7コンポーネント・Browser 13コンポーネントのメソッド設計と依存関係定義が必要。
+- [x] Units Generation — **COMPLETED**（unit-of-work.md・unit-of-work-dependency.md・unit-of-work-story-map.md 生成済み）
+  - **根拠**: 4ユニット（Unit 1: CDK / Unit 2: Pixel Watch / Unit 3: backend（BiometricAnalyzerLambda + ActionExecutorLambda + shared）/ Unit 4: Browser）に分解。Lambda 2関数は共有モジュールが多いため1ユニットにまとめた。並列開発とコード生成の効率化のため。
 
 ### 🟢 CONSTRUCTION PHASE（各ユニットに適用）
 
@@ -157,17 +157,20 @@ OPERATIONS PHASE
 
 ---
 
-## 予定ユニット（Units Generation で確定）
+## 確定ユニット（Units Generation 完了）
 
-| # | ユニット名 | 主要技術 | 依存 |
-|---|----------|---------|------|
-| Unit 1 | CDK インフラ | TypeScript CDK v2 | なし（最初に実行） |
-| Unit 2 | Pixel Watch Wear OS | Kotlin 1.9 / Wear OS | Unit 1（IoT Thing 証明書） |
-| Unit 3 | IoT Lambda パイプライン | TypeScript / Node.js 20 | Unit 1（IoT Rules・DynamoDB） |
-| Unit 4 | LATE Lambda | TypeScript / Node.js 20 | Unit 1・Unit 3（共有モジュール） |
-| Unit 5 | ブラウザ React アプリ | TypeScript / React 18 | Unit 1（Cognito・IoT Endpoint） |
+| # | ユニット名 | ディレクトリ | 主要技術 | 依存 |
+|---|----------|------------|---------|------|
+| Unit 1 | CDK インフラ | `cdk/` | TypeScript CDK v2 | なし（最初に実行） |
+| Unit 2 | Pixel Watch Wear OS | `watch/` | Kotlin 1.9 / Wear OS | Unit 1（IoT Thing・証明書・エンドポイント） |
+| Unit 3 | backend（Lambda × 2 + shared） | `backend/` | TypeScript / Node.js 20 | Unit 1（IoT Rules・DynamoDB・Secrets Manager） |
+| Unit 4 | ブラウザ React アプリ | `browser/` | TypeScript / React 18 | Unit 1（Cognito・IoT Endpoint） |
 
-**開発推奨順序**: Unit 1 → Unit 2・3（並行可） → Unit 4 → Unit 5
+> Unit 3 は BiometricAnalyzerLambda（SLEEP/ANGER 検知）と ActionExecutorLambda（LATE 検知・SMS 送信）を1ユニットとして扱う。共有モジュール（`backend/shared/`）が多いため統合した。
+
+**開発推奨順序**: Unit 1 → Unit 2・Unit 3（並行可） → Unit 4
+
+詳細は [unit-of-work.md](../application-design/unit-of-work.md) / [unit-of-work-dependency.md](../application-design/unit-of-work-dependency.md) を参照。
 
 ---
 
