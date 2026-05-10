@@ -1,5 +1,17 @@
 # AI-DLC 監査ログ
 
+## 改善対応: タイムライン定義（T0〜T4）の追記
+**Timestamp**: 2026-05-10T00:07:00Z
+**User Input**: "１つずつ慎重に進めたいので、まずはこちらの対応を行なって下さい。波及確認を行い、必要に応じて他ドキュメントも修正して下さい。🔴 高 タイムライン定義（T0〜T4）を追記 requirements.md"
+**AI Response**: requirements.md に「## イベントタイムライン定義」セクションを新規追加。SLEEP/ANGER・LATE 各アクションの T0〜T4 タイムライン表・NFR対応表を定義。波及確認の結果、stories.md の US-05・US-08 で「トリガー」が曖昧であったため「T0（Pixel Watch 検知時点）」と明記。LATE の10秒要件はドライバー応答時間を含むためベストエフォート目安値である旨を注記。
+**Context**: Inception 成果物改善 — タイムライン定義追記（🔴 高優先度）
+
+### 変更ファイル
+- `aidlc-docs/inception/requirements/requirements.md`: 「## イベントタイムライン定義」セクションを NFR の直前に新規追加
+- `aidlc-docs/inception/user-stories/stories.md`: US-05・US-08 の Gherkin 条件・チェックリストで「トリガー」→「T0（Pixel Watch 検知時点）」に修正（4箇所）
+
+---
+
 ## audit.md 未記録やり取りの追記・今後の記録方針変更
 **Timestamp**: 2026-05-10T00:06:00Z
 **User Input**: "はい、これから修正作業を始める前に、未記録のやり取りを audit.md に追記した上で、今後の変更依頼も都度記録するようにして下さい。まずは、未記録のやり取りを audit.md に追記して下さい。"
