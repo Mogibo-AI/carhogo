@@ -117,6 +117,47 @@
 
 ---
 
+## イベントタイムライン定義
+
+各アクションにおけるレイテンシ計測の基準点（T0）と目標到達時刻を定義します。
+NFR-01 の全レイテンシ要件はこのタイムラインに基づきます。
+
+### SLEEP / ANGER アクション タイムライン
+
+| 時刻 | イベント | 対応要件 |
+|------|---------|---------|
+| **T0** | **Pixel Watch が SLEEP/ANGER パターンを検知**（← レイテンシ計測の基準点） | — |
+| T0 + <500ms | Pixel Watch が AWS IoT Core へ MQTT メッセージ送信完了 | FR-01-05 |
+| T0 + <1s | IoT Rules Engine が BiometricAnalyzerLambda を起動 | FR-01-02 |
+| T0 + <2s | BiometricAnalyzerLambda が Device Shadow を更新 → ブラウザ UI 更新 | **NFR-01-02** |
+| T0 + <5s | NovaSessionService が Nova 2 Sonic WebSocket 接続を確立し、音声出力を開始 | **NFR-01-01** |
+
+### LATE アクション タイムライン
+
+| 時刻 | イベント | 対応要件 |
+|------|---------|---------|
+| **T0** | **EventBridge Scheduler が ActionExecutorLambda を起動**（← レイテンシ計測の基準点） | — |
+| T0 + <1s | Google Calendar API で次の予定（開始時刻・場所）を取得 | FR-05-01 |
+| T0 + <2s | Google Maps API で ETA を計算し遅刻を確定 | FR-05-02/03 |
+| T0 + <4s | Bedrock でメッセージ生成（またはフォールバック）+ Device Shadow 更新 | FR-05-04 |
+| T0 + <5s | Nova 2 Sonic がメッセージを音声で読み上げ開始 | FR-05-05 |
+| T0 + <10s | ドライバー承認後、SNS SMS 送信完了 | **NFR-01-03** |
+
+> **注意**: LATE の T0 + <10s はドライバーが即座に承認した場合の目安値です。
+> Nova 2 Sonic の読み上げ時間とドライバーの応答時間を含むため、会話が長引いた場合は超過する可能性があります。
+> NFR-01-03 の「10秒以内」はベストエフォートの目標値として扱います。
+
+### タイムラインと NFR の対応表
+
+| NFR ID | 要件 | タイムライン基準 |
+|--------|------|----------------|
+| NFR-01-01 | SLEEP/ANGER → 音声開始まで 5秒以内 | T0（Pixel Watch 検知）→ T0+<5s |
+| NFR-01-02 | 生体トリガー → ブラウザ更新まで 2秒以内 | T0（Pixel Watch 検知）→ T0+<2s |
+| NFR-01-03 | LATE → SMS 送信まで 10秒以内 | T0（EventBridge 起動）→ T0+<10s |
+| NFR-01-04 | MQTT センサーデータのクラウド到達: サブ秒 | T0（Pixel Watch 検知）→ T0+<500ms |
+
+---
+
 ## 非機能要件
 
 ### NFR-01: パフォーマンス
