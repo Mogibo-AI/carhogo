@@ -1,5 +1,17 @@
 # AI-DLC 監査ログ
 
+## 改善対応: 証明書管理フローの責務明記
+**Timestamp**: 2026-05-10T00:10:00Z
+**User Input**: "続けて以下の改善を進めて下さい。🟡 中 証明書管理フローの責務を明記 unit-of-work-dependency.md"
+**AI Response**: unit-of-work-dependency.md の3箇所（依存関係詳細・ビルド順序・技術的制約）で「手動配置」と書かれていた X.509 証明書管理フローを、Unit 1（CDK が cdk/output/certs/ に出力）と Unit 2（injectCertificates Gradle タスクで res/raw/ へ自動コピー）の共同責務として明確化。末尾に「X.509 証明書管理フロー詳細」セクション（フロー図・Gradle タスクの実装例を含む）を追加。波及対応として unit-of-work.md も更新。
+**Context**: Inception 成果物改善 — 証明書管理フローの責務明記（🟡 中優先度）
+
+### 変更ファイル
+- `aidlc-docs/inception/application-design/unit-of-work-dependency.md`: 依存関係詳細・ビルド順序・技術的制約を更新。「X.509 証明書管理フロー詳細」セクション新規追加（責務分担・Gradle タスク実装例・フロー図）
+- `aidlc-docs/inception/application-design/unit-of-work.md`: Unit 2 実装内容の証明書説明と推奨開発順序を更新
+
+---
+
 ## 改善対応: 用語集（glossary.md）の新規作成
 **Timestamp**: 2026-05-10T00:09:00Z
 **User Input**: "はい、続けて以下の改善を進めて下さい。🟡 中 用語集を作成 glossary.md（新規）"
