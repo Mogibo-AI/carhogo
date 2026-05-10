@@ -1,5 +1,17 @@
 # AI-DLC 監査ログ
 
+## 改善対応: 用語集（glossary.md）の新規作成
+**Timestamp**: 2026-05-10T00:09:00Z
+**User Input**: "はい、続けて以下の改善を進めて下さい。🟡 中 用語集を作成 glossary.md（新規）"
+**AI Response**: aidlc-docs/inception/glossary.md を新規作成。全インセプション成果物から専門用語を収集し、CarHogo固有用語・生体情報用語・AWSサービス・プロトコル・OS/フレームワーク・開発手法の6カテゴリで27用語を定義。波及対応として requirements.md の冒頭に glossary.md へのリンクを追加。
+**Context**: Inception 成果物改善 — 用語集新規作成（🟡 中優先度）
+
+### 変更ファイル
+- `aidlc-docs/inception/glossary.md`: 新規作成（27用語・6カテゴリ）
+- `aidlc-docs/inception/requirements/requirements.md`: 冒頭に glossary.md へのリンクを追加
+
+---
+
 ## 改善対応: 競合差別化セクションの追加
 **Timestamp**: 2026-05-10T00:08:00Z
 **User Input**: "はい、続けて以下の改善を進めて下さい。🔴 高 競合差別化セクションを追加 requirements.md"
